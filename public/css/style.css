@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+* {
+    box-sizing: border-box;
+}
+html {
+    font-size: 16px;
+}
+body {
+    margin: 0;
+    background:
+#f7f7f7;
+    font-family: "Open Sans", sans-serif;
+    line-height: 1.6;
+
+}
+button,
+input,
+textarea {
+    border: 1px solid rgb(0 0 0 / 0.3);
+    border-radius: 3px;
+    font-size: 1rem;
+    font-family: "Open Sans", sans-serif;
+    outline: none;
+    padding: 10px;
+}
+input:is(:hover, :focus),
+textarea:is(:hover, :focus) {
+    border-color:
+#c7217f;
+}
+textarea {
+    resize: vertical;
+}
+
+header {
+    background-color:
+#c7217f;
+}
+header ul {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+}
+header a {
+    color:
+white;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.heading {
+    text-align: center;
+}
+
+.post,
+.post-list,
+.form form {
+    background:
+white;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+        0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-radius: 3px;
+    padding: 30px;
+    width: 500px;
+    margin: 0 auto;
+}
+.post-list {
+    width: auto;
+}
+
+.form form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+label {
+    font-weight: bold;
+    margin-top: 7px;
+}
+label:first-child {
+    margin-top: 0;
+}
+button[type="submit"] {
+    background:
+#c7217f;
+    border-color: rgb(0 0 0 / 0.2);
+    color:
+white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+button[type="submit"]:hover {
+    background:
+#fdf7fa;
+    border-color:
+#c7217f;
+    color:
+#000;
+}
+
+.error:is(input, textarea) {
+    border-color:
+red !important;
+    outline: 1px solid
+red;
+    outline-offset: 3px;
+}
+span.error-msg {
+    color:
+red;
+    font-weight: 400;
+}
+.s-msg {
+    background:
+#edf8ed;
+    border: 1px solid
+#87ce8b;
+    border-radius: 3px;
+    color:
+#4ab54f;
+    padding: 10px;
+}
+
+.post-list table {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+}
+.post-list table th,
+.post-list table td {
+    border: 1px solid rgb(0 0 0 / 0.1);
+    padding: 10px 5px;
+}
+.post-list table tbody tr:nth-child(odd) {
+    background:
+#fdf7fa;
+}
+
+.post-list table tbody tr td:last-child a {
+    border: 1px solid rgb(0 0 0 / 0.3);
+    border-radius: 3px;
+    font-size: 14px;
+    margin: 0 3px;
+    padding: 0 3px;
+    width: auto;
+    text-decoration: none;
+}
+a.view-post {
+    color: inherit;
+}
+a.edit {
+    background-color:
+#f5f5ef;
+    color:
+#000;
+}
+a.del {
+    background-color:
+#c7217f;
+    color:
+white;
+}
+.date span {
+    font-style: italic;
+    color:
+#777;
+}

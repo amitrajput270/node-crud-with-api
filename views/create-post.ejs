@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body><%- include("./header"); %>
+        <% if(typeof body==='undefined' ){ var body=false; } %>
+            <div class="container">
+                <h1 class="heading">✍🏻 Create Post</h1>
+                <div class="form">
+                    <form action="create" method="POST">
+                        <label for="post_title">Title: <span class="error-msg title"></span></label>
+                        <input type="text" name="title" id="post_title" placeholder="Title"
+                            value="<%- (typeof body.title !== 'undefined') ? body.title : '' %>">
+                        <label for="post_content">Content: <span class="error-msg content"></span></label>
+                        <textarea name="content" id="post_content"
+                            placeholder="Your thought..."><%- (typeof body.content !== 'undefined') ? body.content : '' %></textarea>
+                        <label for="post_author">Author: <span class="error-msg author"></span></label>
+                        <input type="text" name="author" id="post_author" placeholder="Author name"
+                            value="<%- (typeof body.author !== 'undefined') ? body.author : '' %>">
+                        <button type="submit">Add Post</button>
+                    </form>
+                </div>
+            </div>
+            <% if(typeof validationErrors !=="undefined" ){ %>
+                <script>
+                    let spanItem;
+                    let item;
+                    const validationErrors = <% - validationErrors %>;
+                    for (i of validationErrors) {
+                        spanItem = document.querySelector(`.error-msg.${i.path}`);
+                        item = document.querySelector(`[name="${i.path}"]`);
+                        item.classList.add('error');
+                        spanItem.innerText = i.msg;
+                    }
+                </script>
+                <% } %>
+</body>
+
+</html>
