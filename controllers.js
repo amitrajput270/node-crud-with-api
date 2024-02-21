@@ -82,10 +82,11 @@ class Controllers {
                 "UPDATE `posts` SET `title`=?, `content`=?,`author`=? WHERE `id`=?",
                 [title, content, author, req.params.id]
             );
-            res.render("edit-post", {
-                body: req.body,
-                updated: 1,
-            });
+            res.redirect("/");
+            // res.render("edit-post", {
+            //     body: req.body,
+            //     updated: 1,
+            // });
         } catch (e) {
             next(e);
         }

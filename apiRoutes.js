@@ -6,7 +6,7 @@ const routes = Router({ strict: true });
 
 // Create Data
 routes.post(
-    "/create",
+    "/post",
     [
         body("title", "").trim().not().isEmpty().escape(),
         body("body", "Must not be empty.").trim().not().isEmpty().escape(),

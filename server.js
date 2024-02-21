@@ -22,7 +22,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
-// app.use(apiRoutes);
 
 app.use(session({
     cookie: { maxAge: 60000 },
@@ -43,6 +42,8 @@ app.use((err, req, res, next) => {
 
 app.use(flash());
 app.use('/', routes);
+app.use(apiRoutes);
+
 // catch 404 and forward to error handler
 app.use((err, req, res, next) => {
     console.log(err.message);
