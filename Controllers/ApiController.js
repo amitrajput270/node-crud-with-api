@@ -1,5 +1,7 @@
 import { validationResult, matchedData } from "express-validator";
-import DB from "./database.js";
+import DB from "../dbConnection.js";
+import { sendApiResponse } from '../helpers/helper.js';
+
 
 const validation_result = validationResult.withDefaults({
     formatter: (error) => error.msg,
@@ -9,12 +11,11 @@ class Controller {
     static validation = (req, res, next) => {
         const errors = validation_result(req).mapped();
         if (Object.keys(errors).length) {
-            Controller.response({
+            return res.status(422).json({
                 statusCode: 'ERR',
-                status: 422,
-                statusAppend: 'Validation error.',
+                status: 'Validation Error.',
                 data: errors,
-            })(req, res, next);
+            });
         }
         next();
     };
@@ -26,12 +27,12 @@ class Controller {
                 "INSERT INTO `posts` (`title`,`content`,`author`) VALUES (?,?,?)",
                 [title, body, author]
             );
-            res.status(200).json({
-                ok: 1,
-                status: 200,
-                message: "Post has been created successfully",
-                post_id: result.insertId,
-            });
+            sendApiResponse({
+                statusCode: 'TXN',
+                status: 201,
+                statusAppend: 'Post has been created successfully.',
+                data: { id: result.insertId, title, body, author },
+            })(req, res, next);
         } catch (e) {
             next(e);
         }
@@ -45,7 +46,7 @@ class Controller {
             }
             const [row] = await DB.query(sql);
             if (row.length === 0 && req.params.id) {
-                Controller.response({
+                sendApiResponse({
                     statusCode: 'ERR',
                     status: 200,
                     statusAppend: 'Invalid post ID.',
@@ -53,7 +54,7 @@ class Controller {
             }
             const post = req.params.id ? { post: row[0] } : { posts: row };
             // call response method
-            Controller.response({
+            sendApiResponse({
                 statusCode: 'TXN',
                 status: 200,
                 statusAppend: 'Data fetched successfully.',
@@ -68,30 +69,30 @@ class Controller {
         try {
             const data = matchedData(req);
             const [row] = await DB.query("SELECT * FROM `posts` WHERE `id`=?", [
-                data.post_id,
+                data.id,
             ]);
-
             if (row.length !== 1) {
-                return res.json({
-                    ok: 0,
-                    statu: 404,
-                    message: "Invalid post ID.",
-                });
+                sendApiResponse({
+                    statusCode: 'ERR',
+                    status: 200,
+                    statusAppend: 'Invalid post ID.',
+                    data: data,
+                })(req, res, next);
             }
-            console.log(row, data);
             const post = row[0];
             const title = data.title || post.title;
             const content = data.body || post.content;
             const author = data.author || post.author;
             await DB.execute(
                 "UPDATE `posts` SET `title`=?, `content`=?,`author`=?  WHERE `id`=?",
-                [title, content, author, data.post_id]
+                [title, content, author, data.id]
             );
-            res.json({
-                ok: 1,
+            sendApiResponse({
+                statusCode: 'TXN',
                 status: 200,
-                message: "Post Updated Successfully",
-            });
+                statusAppend: 'Post has been updated successfully.',
+                data: data
+            })(req, res, next);
         } catch (e) {
             next(e);
         }
@@ -104,17 +105,17 @@ class Controller {
                 [req.params.id]
             );
             if (result.affectedRows) {
-                return res.json({
-                    ok: 1,
+                sendApiResponse({
+                    statusCode: 'TXN',
                     status: 200,
-                    message: "Post has been deleted successfully.",
-                });
+                    statusAppend: 'Post has been deleted successfully.',
+                })(req, res, next);
             }
-            res.status(404).json({
-                ok: 0,
-                status: 404,
-                message: "Invalid post ID.",
-            });
+            sendApiResponse({
+                statusCode: 'ERR',
+                status: 200,
+                statusAppend: 'Invalid post ID.',
+            })(req, res, next);
         } catch (e) {
             next(e);
         }

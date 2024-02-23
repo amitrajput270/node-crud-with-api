@@ -1,7 +1,7 @@
-import DB from "./database.js";
+import DB from "../dbConnection.js";
 
 class Controllers {
-    static create_post = (req, res) => {
+    static createPost = (req, res) => {
         res.render("create-post");
     };
 
@@ -16,7 +16,7 @@ class Controllers {
         }
     };
 
-    static insert_post = async (req, res, next) => {
+    static insertPost = async (req, res, next) => {
         if (res.locals.validationError !== undefined) {
             return res.render("create-post", {
                 validationErrors: JSON.stringify(
@@ -37,7 +37,7 @@ class Controllers {
         }
     };
 
-    static edit_post = async (req, res, next) => {
+    static editPost = async (req, res, next) => {
         if (res.locals.validationError !== undefined) {
             return res.redirect("/");
         }
@@ -56,7 +56,7 @@ class Controllers {
         }
     };
 
-    static update_post = async (req, res, next) => {
+    static updatePost = async (req, res, next) => {
         if (isNaN(+req.params.id)) {
             return res.redirect("/");
         }
@@ -92,7 +92,7 @@ class Controllers {
         }
     };
 
-    static delete_post = async (req, res, next) => {
+    static deletePost = async (req, res, next) => {
         if (isNaN(+req.params.id)) {
             return res.redirect("/");
         }
@@ -100,7 +100,7 @@ class Controllers {
         return res.redirect("/");
     };
 
-    static single_post = async (req, res, next) => {
+    static singlePost = async (req, res, next) => {
         if (isNaN(+req.params.id)) {
             return res.redirect("/");
         }

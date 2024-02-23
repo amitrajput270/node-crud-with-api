@@ -4,11 +4,12 @@ import path, { dirname } from "path";
 import { fileURLToPath } from 'url';
 import flash from 'express-flash';
 import session from 'express-session';
-import apiRoutes from './apiRoutes.js';
-import routes from './routes.js';
+import postRoute from './routes/postRoute.js';
+import apiRoutes from './routes/apiRoutes.js';
+import authRoute from './routes/authRoute.js';
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,8 +21,9 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use(express.json());
+
+
 
 app.use(session({
     cookie: { maxAge: 60000 },
@@ -41,7 +43,8 @@ app.use((err, req, res, next) => {
 });
 
 app.use(flash());
-app.use('/', routes);
+app.use('/', postRoute);
+app.use('/api/auth', authRoute);
 app.use(apiRoutes);
 
 // catch 404 and forward to error handler

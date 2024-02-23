@@ -1,34 +1,34 @@
 import { Router } from "express";
 import { param } from "express-validator";
-import Controllers from "./controllers.js";
-import Validation from "./validation.js";
+import Controllers from "../Controllers/PostController.js";
+import Validation from "../validation.js";
 
 const router = Router({ strict: true });
 
 router.get("/", Controllers.post_list);
-router.get("/create", Controllers.create_post);
+router.get("/create", Controllers.createPost);
 router.get(
     "/edit/:id",
     param("id").exists().isNumeric().toInt(),
     Validation.validate,
-    Controllers.edit_post
+    Controllers.editPost
 );
 router.get(
     "/post/:id",
     [param("id").exists().isNumeric().toInt()],
-    Controllers.single_post
+    Controllers.singlePost
 );
 router.get(
     "/delete/:id",
     [param("id").exists().isNumeric().toInt()],
-    Controllers.delete_post
+    Controllers.deletePost
 );
 
 router.post(
     "/create",
     Validation.default(["title", "author", "content"]),
     Validation.validate,
-    Controllers.insert_post
+    Controllers.insertPost
 );
 router.post(
     "/edit/:id",
@@ -37,7 +37,7 @@ router.post(
         ...Validation.default(["title", "author", "content"]),
     ],
     Validation.validate,
-    Controllers.update_post
+    Controllers.updatePost
 );
 
 export default router;
